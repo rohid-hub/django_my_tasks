@@ -6,20 +6,52 @@ Tasks
 
 {% block content %}
 <h1>Tasks</h1>
-<form action="{% url 'tasks' %}" method="POST" class="form-inline my-2 my-lg-0">
+<br>
+<form  action="{% url 'tasks' %}" method="POST">
   {% csrf_token %}
-  <input class="form-control mr-sm-2" type="text" placeholder="Add Task" aria-label="Search" name="content">
-  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add Task</button>
+  <div class="form-row align-items-center">
+    <div class="col-auto">
+      <input class="form-control" type="text" placeholder="Add Task" aria-label="Search" name="content">
+    </div>
+    <div class="col-auto">
+      <div class="btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary">
+          <input class="form-check-input" type="checkbox" id="autoSizingCheck" name="isImportent" value="True" autocomplete="off">Importent</label>
+      </div>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary">Add Task</button>
+    </div>
+  </div>
 </form>
 <br>
-<ul>
-  {% if tasks %}
+<table class="table table-bordered">
+  <tbody>
+    {% if tasks %}
     {% for task in tasks %}
-      <li>
-        {{ task }}
-        <a href="{% url 'delete' task.id %}">Delete Task</a>
-      </li>
+      <tr>
+        <td {% if task.isCompleted %}
+          style="text-decoration: line-through;"
+        {% endif %}>{{ task }}</td>
+        <td><a href="{% url 'isImportent' task.id %}"  class="btn 
+          {% if task.isImportent %}
+          btn-warning
+        {% else %}
+          btn-secondary
+        {% endif %}
+          ">Importent</a></td>
+        <td><a href="{% url 'isCompleted' task.id %}" class="btn 
+          
+          {% if task.isCompleted %}
+            btn-success
+          {% else %}
+            btn-secondary
+          {% endif %}
+          ">Completed</a></td>
+        <td><a href="{% url 'delete' task.id %}"  class="btn btn-danger">Delete Task</a></td>
+      </tr>
     {% endfor %}
   {% endif %}
-</ul>
+  </tbody>
+</table>
 {% endblock content %}

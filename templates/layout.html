@@ -30,6 +30,27 @@
   </nav>
   <main class="container">
     <br>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert  
+          {% if message.tags %}
+            {% if message.tags == 'success' %}
+              alert-success
+            {% elif message.tags == 'warning' %}
+              alert-danger
+            {% else %}
+              alert-primary
+            {% endif %}
+          {% endif %} 
+        alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+    <br>
     {% block content %}
       
     {% endblock content %}

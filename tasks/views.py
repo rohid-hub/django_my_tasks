@@ -11,7 +11,7 @@ def tasks(request):
     form = AddTaskForm(request.POST or None)
     if form.is_valid():
       form.save()
-      messages.success(request, ("Task item added to tasks!"))
+      messages.success(request, "Task item added to tasks!")
       return redirect('tasks')
     else:
       return redirect('tasks')
@@ -22,5 +22,26 @@ def tasks(request):
 def delete(request, task_id):
   task_item_to_dlt = Task.objects.get(pk=task_id)
   task_item_to_dlt.delete()
-  messages.success(request, ("Task deleted!"))
+  messages.warning(request, "Task deleted!")
+  return redirect('tasks')
+
+
+def isCompleted(request, task_id):
+  item = Task.objects.get(pk=task_id)
+  if item.isCompleted == False:
+    item.isCompleted = True
+    item.save()
+  else:
+    item.isCompleted = False
+    item.save()
+  return redirect('tasks')
+
+def isImportent(request, task_id):
+  item = Task.objects.get(pk=task_id)
+  if item.isImportent == False:
+    item.isImportent = True
+    item.save()
+  else:
+    item.isImportent = False
+    item.save()
   return redirect('tasks')
