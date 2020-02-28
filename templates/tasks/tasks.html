@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Tasks
+{% endblock title %}
+
+{% block content %}
+<h1>Tasks</h1>
+<form action="{% url 'tasks' %}" method="POST" class="form-inline my-2 my-lg-0">
+  {% csrf_token %}
+  <input class="form-control mr-sm-2" type="text" placeholder="Add Task" aria-label="Search" name="content">
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add Task</button>
+</form>
+<br>
+<ul>
+  {% if tasks %}
+    {% for task in tasks %}
+      <li>
+        {{ task }}
+        <a href="{% url 'delete' task.id %}">Delete Task</a>
+      </li>
+    {% endfor %}
+  {% endif %}
+</ul>
+{% endblock content %}
