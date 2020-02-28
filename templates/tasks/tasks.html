@@ -10,7 +10,7 @@ Tasks
 <form  action="{% url 'tasks' %}" method="POST">
   {% csrf_token %}
   <div class="form-row align-items-center">
-    <div class="col-auto">
+    <div class="col-6">
       <input class="form-control" type="text" placeholder="Add Task" aria-label="Search" name="content">
     </div>
     <div class="col-auto">
@@ -25,33 +25,71 @@ Tasks
   </div>
 </form>
 <br>
-<table class="table table-bordered">
-  <tbody>
-    {% if tasks %}
-    {% for task in tasks %}
-      <tr>
-        <td {% if task.isCompleted %}
-          style="text-decoration: line-through;"
-        {% endif %}>{{ task }}</td>
-        <td><a href="{% url 'isImportent' task.id %}"  class="btn 
-          {% if task.isImportent %}
-          btn-warning
-        {% else %}
-          btn-secondary
-        {% endif %}
-          ">Importent</a></td>
-        <td><a href="{% url 'isCompleted' task.id %}" class="btn 
-          
-          {% if task.isCompleted %}
-            btn-success
-          {% else %}
-            btn-secondary
-          {% endif %}
-          ">Completed</a></td>
-        <td><a href="{% url 'delete' task.id %}"  class="btn btn-danger">Delete Task</a></td>
-      </tr>
-    {% endfor %}
-  {% endif %}
-  </tbody>
-</table>
+<br>
+{% if tasks %}
+  <p class="btn btn-primary">
+    Tasks
+    <span class="badge badge-light">{{ tasks|length }}</span>
+  </p>
+  <br>
+  
+  <div class="card card-body pb-0">
+  {% for task in tasks %}
+  <div class="alert {% if task.isImportent %}
+  alert-warning
+  {% else %}
+  alert-primary
+  {% endif %} row align-items-center mx-0" role="alert">
+   <div class="col-auto mr-auto" style="color: #222;">{{ task }}</div>
+   <div class="col-auto">
+    <a href="{% url 'isImportent' task.id %}"
+    style="margin-left: 10px;"
+    class="
+      btn btn-sm 
+      {% if task.isImportent %}
+      btn-warning
+      {% else %}
+        btn-secondary
+      {% endif %}"><i class="fas fa-star"></i></a>
+     <a href="{% url 'isCompleted' task.id %}" class="btn btn-success btn-sm"><i class="fas fa-check"></i></a>
+     <a href="{% url 'delete' task.id %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+   </div>
+  </div>
+  {% endfor %}
+   </div>
+{% endif %}
+
+<!-- Importent Tasks  -->
+<br>
+{% if completed_Tasks %}
+<div class="row">
+  <div class="col-auto pr-0">
+    <p>
+      <a class="btn btn-success" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Completed
+          <span class="badge badge-light">{{ completed_Tasks|length }}</span>
+      </a>
+    </p>
+  </div>
+  <div class="col-auto">
+    <a href="{% url 'tasks' %}dltCompletedTasks" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+  </div>
+</div>
+  <div class="collapse" id="collapseExample">
+      <div class="card card-body pb-0">
+      {% for task in completed_Tasks %}
+          <div class="alert alert-success row align-items-center mx-0" role="alert">
+            <div class="col-auto mr-auto" style="text-decoration: line-through; color: #222;">{{ task }}</div>
+            <div class="col-auto">
+              <a href="{% url 'isCompleted' task.id %}" class="btn btn-success btn-sm"><i class="fas fa-times"></i></a>
+              <a href="{% url 'delete' task.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+            </div>
+          </div>
+      {% endfor %}
+      </div>
+  </div>
+  <br>
+  <br>
+
+{% endif %}
 {% endblock content %}

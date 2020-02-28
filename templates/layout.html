@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/96d8afcea7.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <title>My Tasks - {% block title %}{% endblock title %}</title>
 </head>
@@ -19,7 +20,12 @@
           <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="{% url 'tasks' %}">Tasks <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{% url 'tasks' %}">Tasks
+            {% if tasks|length != 0 %}
+              <span class="badge badge-light">{{ tasks|length }}</span>
+              <span class="sr-only">unread messages</span>
+            {% endif %}
+          </a>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
@@ -29,9 +35,9 @@
     </div>
   </nav>
   <main class="container">
-    <br>
     {% if messages %}
       {% for message in messages %}
+        <br>
         <div class="alert  
           {% if message.tags %}
             {% if message.tags == 'success' %}
