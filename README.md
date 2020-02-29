@@ -1,1 +1,1 @@
-This is django Tasks or Todo webapp project.
+This a is django Tasks or Todo webapp project.
